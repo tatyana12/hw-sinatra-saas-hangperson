@@ -23,7 +23,7 @@ class HangpersonGame
     Net::HTTP.post_form(uri ,{}).body
   end
   
-  def guess letter
+  def guess(letter) 
     raise ArgumentError unless letter =~ /[A-Za-z]/
     return false if @guesses.include?(letter) || @wrong_guesses.include?(letter) || ('A'..'Z').include?(letter)
     if @word.include? letter
