@@ -63,25 +63,33 @@ end
   # won, lost, or neither, and take the appropriate action.
   # Notice that the show.erb template expects to use the instance variables
   # wrong_guesses and word_with_guesses from @game.
-  get '/show' do
-    result = @game.check_win_or_lose
-    if result == :win
-     erb :win
-    elsif result == :lose
-  erb :lose
-else
-erb :show
-end
+ get '/show' do
+    case @game.check_win_or_lose
+    when :win
+      flash[:redirect] = true
+      redirect '/win'
+    when :lose
+      flash[:redirect] =true
+      redirect '/lose'
+    when :play
+      erb :show
+    end
   end
   
   get '/win' do
-    ### YOUR CODE HERE ###
-    erb :win # You may change/remove this line
+    if flash[:redirect]
+      erb :win
+    else
+      redirect '/show'
+    end
   end
   
   get '/lose' do
-    ### YOUR CODE HERE ###
-    erb :lose # You may change/remove this line
+    if flash[:redirect]
+      erb :lose
+    else
+      redirect '/show'
+    end
   end
-  
 end
+
